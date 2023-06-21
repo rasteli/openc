@@ -1,8 +1,8 @@
 import os from "os"
 import fs from "fs"
 import inquirer from "inquirer"
-import { createProject } from "./core/create-project"
-import { selectProject } from "./core/select-project"
+import { createProject } from "./services/create-project"
+import { selectProject } from "./services/select-project"
 
 async function main(www: string) {
   const answers = await inquirer.prompt({
