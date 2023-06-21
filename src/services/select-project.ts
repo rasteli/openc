@@ -1,42 +1,65 @@
 import fs from "node:fs"
+import path from "node:path"
 import inquirer from "inquirer"
 import { exec } from "node:child_process"
 import { colors } from "../tokens/colors"
+import { checkRootDir } from "../utils/check-root-dir"
 
 interface SelectProjectParams {
   www: string
+  basename: string
 }
 
 interface SelectProjectAnswers {
   project: string
+  todo: string
+  confirmRemove: boolean
 }
 
-let message = "Select a project"
-
-export async function selectProject({ www }: SelectProjectParams) {
+export async function selectProject({ www, basename }: SelectProjectParams) {
   let projects = fs.readdirSync(www)
-  const rootConditions = ["index", "main", "src", "config", "package"]
 
-  const answers = await inquirer.prompt<SelectProjectAnswers>({
-    type: "list",
-    name: "project",
-    message,
-    choices: projects
-  })
+  const answers = await inquirer.prompt<SelectProjectAnswers>([
+    {
+      type: "list",
+      name: "project",
+      message: `Select a project in ${colors.red}${basename}${colors.reset}`,
+      choices: projects
+    },
+    {
+      type: "list",
+      name: "todo",
+      message: "What do you want to do?",
+      choices: ["Open", "Remove"],
+      when: ({ project }) => {
+        const path = `${www}/${project}`
+        return checkRootDir(path)
+      }
+    },
+    {
+      type: "confirm",
+      name: "confirmRemove",
+      message: "Are you sure?",
+      default: false,
+      when: ({ todo }) => todo === "Remove"
+    }
+  ])
 
-  www = `${www}/${answers.project}`
-  projects = fs.readdirSync(www)
-  message = `Select a project in ${colors.red}${answers.project}${colors.reset}`
-
-  const isRoot = projects.some(value => {
-    return rootConditions.some(condition => {
-      return value.includes(condition)
-    })
-  })
+  const projectPath = `${www}/${answers.project}`
+  const isRoot = checkRootDir(projectPath)
 
   if (!isRoot) {
-    await selectProject({ www })
-  } else {
-    exec(`code ${www}`)
+    await selectProject({ www: projectPath, basename: answers.project })
+    return
   }
+
+  if (answers.confirmRemove) {
+    fs.rmSync(projectPath, { recursive: true, force: true })
+    console.log(`${colors.red}${answers.project}${colors.reset} removed`)
+
+    await selectProject({ www, basename: path.basename(www) })
+    return
+  }
+
+  exec(`code ${projectPath}`)
 }

@@ -1,5 +1,6 @@
 import os from "node:os"
 import fs from "node:fs"
+import path from "node:path"
 import inquirer from "inquirer"
 import { createProject } from "./services/create-project"
 import { selectProject } from "./services/select-project"
@@ -15,7 +16,7 @@ async function main(www: string) {
   if (answers.type === "Create") {
     await createProject({ www })
   } else {
-    await selectProject({ www })
+    await selectProject({ www, basename: path.basename(www) })
   }
 }
 
