@@ -29,6 +29,10 @@ export async function createViteProject({ www }: CreateProjectParams) {
     default: "vite-app"
   })
 
+  if (!fs.existsSync(www)) {
+    fs.mkdirSync(www, { recursive: true })
+  }
+
   const path = `${www}/${answers.projectName}`
 
   // create vite script already checks if the path exists
@@ -63,6 +67,10 @@ export async function createNextProject({ www }: CreateProjectParams) {
     await confirmTargetPathOverwrite({ path, target: answers.projectName })
   }
 
+  if (!fs.existsSync(www)) {
+    fs.mkdirSync(www, { recursive: true })
+  }
+
   spawnProcess({
     cmd: `npx create-next-app@${answers.nextVersion} ${answers.projectName} && code ${path}`,
     cwd: www,
@@ -84,7 +92,7 @@ export async function createNodeProject({ www }: CreateProjectParams) {
     await confirmTargetPathOverwrite({ path, target: answers.projectName })
   }
 
-  fs.mkdirSync(path)
+  fs.mkdirSync(path, { recursive: true })
 
   spawnProcess({
     cmd: `npm init -y && code ${path}`,
