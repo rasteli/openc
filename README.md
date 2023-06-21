@@ -5,12 +5,12 @@ OpenC is a CLI tool to create, open and remove projects in Visual Studio Code.
 ### Features
 
 - Recursive listing
-- Specify location to create project
 - Recursive directory creation
-- And well...
-  - Create project
-  - Open project
-  - Remove project
+- Specify location to create project
+- Create these projects
+  - Vite
+  - Next.js
+  - Node.js
 
 ### Installation
 
