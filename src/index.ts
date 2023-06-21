@@ -22,11 +22,12 @@ async function main(www: string) {
 }
 
 const homeDir = os.homedir()
+const defaultDir = `${homeDir}/www`
 
-if (!fs.existsSync(`${homeDir}/www`)) {
-  fs.mkdirSync(`${homeDir}/www`)
+if (!fs.existsSync(defaultDir)) {
+  fs.mkdirSync(defaultDir)
 }
 
 ;(async () => {
-  await main(`${homeDir}/www`)
+  await main(defaultDir)
 })()
