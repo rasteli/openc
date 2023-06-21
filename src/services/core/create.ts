@@ -1,4 +1,4 @@
-import fs from "fs"
+import fs from "node:fs"
 import inquirer from "inquirer"
 import { colors } from "../../tokens/colors"
 import { spawnProcess } from "../../utils/spawn-processs"
@@ -11,7 +11,6 @@ export interface CreateProjectParams {
 interface CreateProjectAnswers {
   node: {
     projectName: string
-    packageManager: "npm" | "yarn"
   }
   vite: {
     projectName: string
@@ -36,7 +35,8 @@ export async function createViteProject({ www }: CreateProjectParams) {
   // and asks for confirmation to overwrite it
 
   spawnProcess({
-    cmd: `cd ${www} && npm create vite@latest ${answers.projectName} && code ${path}`,
+    cmd: `npm create vite@latest ${answers.projectName} && code ${path}`,
+    cwd: www,
     successMessage: `${colors.green}Project created at ${colors.cyan}${path}${colors.reset}`
   })
 }
@@ -64,31 +64,19 @@ export async function createNextProject({ www }: CreateProjectParams) {
   }
 
   spawnProcess({
-    cmd: `cd ${www} && npx create-next-app@${answers.nextVersion} ${answers.projectName} && code ${path}`,
+    cmd: `npx create-next-app@${answers.nextVersion} ${answers.projectName} && code ${path}`,
+    cwd: www,
     successMessage: `${colors.green}Project created at ${colors.cyan}${path}${colors.reset}`
   })
 }
 
 export async function createNodeProject({ www }: CreateProjectParams) {
-  const answers = await inquirer.prompt<CreateProjectAnswers["node"]>([
-    {
-      type: "input",
-      name: "projectName",
-      message: "Project name:",
-      default: "node-app"
-    },
-    {
-      type: "list",
-      name: "packageManager",
-      message: "Package manager:",
-      choices: ["npm", "yarn"]
-    }
-  ])
-
-  const initCmd = {
-    npm: `npm init -y`,
-    yarn: `yarn init -y`
-  }
+  const answers = await inquirer.prompt<CreateProjectAnswers["node"]>({
+    type: "input",
+    name: "projectName",
+    message: "Project name:",
+    default: "node-app"
+  })
 
   const path = `${www}/${answers.projectName}`
 
@@ -99,9 +87,8 @@ export async function createNodeProject({ www }: CreateProjectParams) {
   fs.mkdirSync(path)
 
   spawnProcess({
-    cmd: `cd ${www}/${answers.projectName} && ${
-      initCmd[answers.packageManager]
-    } && code ${path}`,
+    cmd: `npm init -y && code ${path}`,
+    cwd: path,
     successMessage: `${colors.green}Project created at ${colors.cyan}${path}${colors.reset}`
   })
 }

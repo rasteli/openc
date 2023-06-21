@@ -1,6 +1,6 @@
-import fs from "fs"
+import fs from "node:fs"
 import inquirer from "inquirer"
-import { exec } from "child_process"
+import { exec } from "node:child_process"
 import { colors } from "../tokens/colors"
 
 interface SelectProjectParams {

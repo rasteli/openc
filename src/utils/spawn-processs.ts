@@ -1,14 +1,16 @@
-import { spawn } from "child_process"
+import { spawn } from "node:child_process"
 
 interface SpawnProcessParams {
   cmd: string
+  cwd: string
   successMessage: string
 }
 
-export function spawnProcess({ cmd, successMessage }: SpawnProcessParams) {
+export function spawnProcess({ cmd, cwd, successMessage }: SpawnProcessParams) {
   const child = spawn(cmd, {
     stdio: "inherit",
-    shell: true
+    shell: true,
+    cwd
   })
 
   child.on("exit", code => {

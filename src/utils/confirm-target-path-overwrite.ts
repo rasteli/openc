@@ -1,4 +1,4 @@
-import fs from "fs"
+import fs from "node:fs"
 import inquirer from "inquirer"
 
 interface ConfirmTargetPathOverwriteParams {
