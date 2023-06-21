@@ -9,6 +9,7 @@ import {
 
 interface CreateProjectAnswers {
   project: "Vite" | "Next" | "Node"
+  where: string
 }
 
 export async function createProject({ www }: CreateProjectParams) {
@@ -19,17 +20,25 @@ export async function createProject({ www }: CreateProjectParams) {
   ] as const
 
   const cmds = {
-    Vite: async () => await createViteProject({ www }),
-    Next: async () => await createNextProject({ www }),
-    Node: async () => await createNodeProject({ www })
+    Vite: async (where: string) => await createViteProject({ www: where }),
+    Next: async (where: string) => await createNextProject({ www: where }),
+    Node: async (where: string) => await createNodeProject({ www: where })
   }
 
-  const answers = await inquirer.prompt<CreateProjectAnswers>({
-    type: "list",
-    name: "project",
-    message: "Create project:",
-    choices
-  })
+  const answers = await inquirer.prompt<CreateProjectAnswers>([
+    {
+      type: "list",
+      name: "project",
+      message: "Create project:",
+      choices
+    },
+    {
+      type: "input",
+      name: "where",
+      message: "Where?",
+      default: www
+    }
+  ])
 
   // Remove colors from answer
   const project = answers.project.replace(
@@ -38,5 +47,5 @@ export async function createProject({ www }: CreateProjectParams) {
   ) as CreateProjectAnswers["project"]
 
   const createProjectFunction = cmds[project]
-  await createProjectFunction()
+  await createProjectFunction(answers.where)
 }
