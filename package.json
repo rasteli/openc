@@ -1,17 +1,37 @@
 {
   "name": "@rasteli/openc",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "description": "CLI tool to create, open and remove projects in Visual Studio Code",
+  "author": "Gabriel Rasteli",
+  "bin": {
+    "openc": "dist/index.js"
+  },
+  "homepage": "https://github.com/rasteli/openc#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rasteli/openc.git"
+  },
+  "keywords": [
+    "cli",
+    "code"
+  ],
+  "bugs": {
+    "url": "https://github.com/rasteli/openc/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "changeset publish"
+    "release": "npm run build && changeset publish"
   },
   "dependencies": {
     "inquirer": "^8.0.0"
