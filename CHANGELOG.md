@@ -1,5 +1,11 @@
 # @rasteli/openc
 
+## 1.0.3
+
+### Patch Changes
+
+- Add node shebang
+
 ## 1.0.2
 
 ### Patch Changes
