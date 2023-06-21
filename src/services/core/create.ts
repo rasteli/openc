@@ -2,6 +2,7 @@ import fs from "fs"
 import inquirer from "inquirer"
 import { colors } from "../../tokens/colors"
 import { spawnProcess } from "../../utils/spawn-processs"
+import { confirmTargetPathOverwrite } from "../../utils/confirm-target-path-overwrite"
 
 export interface CreateProjectParams {
   www: string
@@ -31,6 +32,9 @@ export async function createViteProject({ www }: CreateProjectParams) {
 
   const path = `${www}/${answers.projectName}`
 
+  // create vite script already checks if the path exists
+  // and asks for confirmation to overwrite it
+
   spawnProcess({
     cmd: `cd ${www} && npm create vite@latest ${answers.projectName} && code ${path}`,
     successMessage: `${colors.green}Project created at ${colors.cyan}${path}${colors.reset}`
@@ -54,6 +58,10 @@ export async function createNextProject({ www }: CreateProjectParams) {
   ])
 
   const path = `${www}/${answers.projectName}`
+
+  if (fs.existsSync(path)) {
+    await confirmTargetPathOverwrite({ path, target: answers.projectName })
+  }
 
   spawnProcess({
     cmd: `cd ${www} && npx create-next-app@${answers.nextVersion} ${answers.projectName} && code ${path}`,
@@ -83,6 +91,11 @@ export async function createNodeProject({ www }: CreateProjectParams) {
   }
 
   const path = `${www}/${answers.projectName}`
+
+  if (fs.existsSync(path)) {
+    await confirmTargetPathOverwrite({ path, target: answers.projectName })
+  }
+
   fs.mkdirSync(path)
 
   spawnProcess({
