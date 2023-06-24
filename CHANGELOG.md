@@ -1,5 +1,11 @@
 # @rasteli/openc
 
+## 1.1.0
+
+### Minor Changes
+
+- Add fuzzy search in directory listing
+
 ## 1.0.4
 
 ### Patch Changes

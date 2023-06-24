@@ -1,6 +1,6 @@
 {
   "name": "@rasteli/openc",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -34,7 +34,8 @@
     "release": "npm run build && changeset publish"
   },
   "dependencies": {
-    "inquirer": "^8.0.0"
+    "inquirer": "^8.0.0",
+    "inquirer-search-list": "^1.2.6"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",

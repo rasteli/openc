@@ -19,7 +19,7 @@ interface SelectProjectAnswers {
 export async function selectProject({ www, basename }: SelectProjectParams) {
   const answers = await inquirer.prompt<SelectProjectAnswers>([
     {
-      type: "list",
+      type: "search-list",
       name: "project",
       message: `Select a project in ${colors.red}${basename}${colors.reset}`,
       choices: fs.readdirSync(www)

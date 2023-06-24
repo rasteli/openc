@@ -6,6 +6,8 @@ import inquirer from "inquirer"
 import { createProject } from "./services/create-project"
 import { selectProject } from "./services/select-project"
 
+inquirer.registerPrompt("search-list", require("inquirer-search-list"))
+
 async function main(www: string) {
   const answers = await inquirer.prompt({
     type: "list",
