@@ -1,5 +1,11 @@
 # @rasteli/openc
 
+## 1.1.1
+
+### Patch Changes
+
+- Add cd into parent directory
+
 ## 1.1.0
 
 ### Minor Changes

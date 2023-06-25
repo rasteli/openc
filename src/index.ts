@@ -19,7 +19,7 @@ async function main(www: string) {
   if (answers.type === "Create") {
     await createProject({ www })
   } else {
-    await selectProject({ www, basename: path.basename(www) })
+    await selectProject({ www, basename: path.basename(www), index: 0 })
   }
 }
 
