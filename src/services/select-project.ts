@@ -30,7 +30,8 @@ export async function selectProject({
       type: "search-list",
       name: "project",
       message: `Select a project in ${colors.red}${basename}${colors.reset}`,
-      choices: isChild ? ["..", ...choices] : choices
+      choices: isChild ? ["..", ...choices] : choices,
+      pageSize: 12
     },
     {
       type: "list",

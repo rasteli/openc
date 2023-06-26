@@ -1,5 +1,11 @@
 # @rasteli/openc
 
+## 1.1.2
+
+### Patch Changes
+
+- Increase selection page size
+
 ## 1.1.1
 
 ### Patch Changes
